@@ -15,7 +15,6 @@ describe Ure do
   end
 
   it "is immutable" do
-    expect(@van.frozen?).to be(true)
     expect { @van.instance_variable_set(:paint, "red") }.to raise_error(NameError)
   end
 
@@ -30,11 +29,11 @@ describe Ure do
   end
 
   it "has a to_s method" do
-    expect(@van.to_s).to eq("#<ure Car {:paint=>:mural, :deluxe=>false}")
+    expect(@van.to_s).to eq("#<ure {:paint=>:mural, :deluxe=>false}")
   end
 
   it "has an inspect method" do
-    expect(@van.inspect).to eq("#<ure Car {:paint=>:mural, :deluxe=>false}")
+    expect(@van.inspect).to eq("#<ure {:paint=>:mural, :deluxe=>false}")
   end
 
   it "has a to_a method" do

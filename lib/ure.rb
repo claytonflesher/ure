@@ -1,5 +1,5 @@
 require "ure/version"
-class Ure
+class Ure < BasicObject
   def self.members
     @members
   end
@@ -42,7 +42,6 @@ class Ure
 
     @values = fields
     @fields = fields
-    freeze
   end
 
   attr_reader :fields
@@ -52,15 +51,11 @@ class Ure
   end
 
   def each(&block)
-    if block_given?
-      fields.each_pair { |key, value| yield(key, value) }
-    else
-      fields.each_pair
-    end
+    to_h.each(&block)
   end
 
   def to_s
-    "#<ure #{self.class} #{fields.to_s}"
+    "#<ure #{fields.to_s}"
   end
 
   def inspect
