@@ -1,78 +1,55 @@
 require 'spec_helper'
 
 describe Ure do
+  Car    = Ure.new(:paint, :deluxe)
   before (:each) do
-    @car = Ure::Struct.new(fields: { paint: "blue", deluxe: false } )
+    @van   = Car.new(paint: :mural, deluxe: false)
   end
 
   it 'has a version number' do
     expect(Ure::VERSION).not_to be nil
   end
 
-  it 'sets readers for field keys' do
-    expect(@car.paint).to eq("blue")
-    expect(@car.deluxe).to eq(false)
+  it "creates methods from the hash" do
+    expect(@van.paint).to    eq(:mural)
   end
 
-  it 'raises an error when field keys are existing methods' do
-    expect{ Ure::Struct.new(fields: { select: "something" } ) }
-      .to raise_error(/is already an existing method!/)
+  it "is immutable" do
+    expect(@van.frozen?).to be(true)
+    expect { @van.instance_variable_set(:paint, "red") }.to raise_error(NameError)
   end
 
-  it 'is immutable' do
-    expect(@car.frozen?).to eq(true)
-    expect { @car.instance_variable_set(:@paint, "red") }.to raise_error(RuntimeError)
+  it "has a [] method" do
+    expect(@van[:paint]).to eq(:mural)
   end
 
-  it 'has an each method' do
-    values = []
-    @car.each { |value| values << value}
-    expect(values).to eq(["blue", false])
-  end
-
-  it 'has an each_pair method' do
+  it "has an each method" do
     pairs = {}
-    @car.each_pair { |key, value| pairs[key] = value }
-    expect(pairs).to eq({:paint => "blue", :deluxe => false })
+    @van.each { |key, value| pairs[key] = value }
+    expect(pairs).to eq({:paint => :mural, :deluxe => false})
   end
 
-  it 'returns to_s' do
-    expect(@car.to_s).to eq("{:paint=>\"blue\", :deluxe=>false}")
+  it "has a to_s method" do
+    expect(@van.to_s).to eq("#<ure Car {:paint=>:mural, :deluxe=>false}")
   end
 
-  it 'has an inspect method' do
-    expect(@car.inspect).to eq("{:paint=>\"blue\", :deluxe=>false}")
+  it "has an inspect method" do
+    expect(@van.inspect).to eq("#<ure Car {:paint=>:mural, :deluxe=>false}")
   end
 
-  it 'has a length method' do
-    expect(@car.length).to eq(2)
+  it "has a to_a method" do
+    expect(@van.to_a).to eq([:mural, false])
   end
 
-  it 'has a members method' do
-    expect(@car.members).to eq([:paint, :deluxe])
+  it "has a to_h method" do
+    expect(@van.to_h).to eq({:paint => :mural, :deluxe => false})
   end
 
-  it 'has a select method' do
-    expect(@car.select { |v| v =~ /[b]/ }).to eq(["blue"])
+  it "has a values method" do
+    expect(@van.values).to eq([:mural, false])
   end
 
-  it 'has a size method' do
-    expect(@car.size).to eq(2)
-  end
-
-  it 'has a to_a method' do
-    expect(@car.to_a).to eq(["blue", false])
-  end
-
-  it 'has a to_h method' do
-    expect(@car.to_h).to eq({:paint => "blue", :deluxe => false })
-  end
-
-  it 'has a values method' do
-    expect(@car.values).to eq(["blue", false])
-  end
-
-  it 'has a values_at method' do
-    expect(@car.values_at(0, 2)).to eq(["blue", nil])
+  it "has a values_at method" do
+    expect(@van.values_at(:deluxe, :paint)).to eq([false, :mural])
   end
 end

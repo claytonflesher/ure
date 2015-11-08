@@ -6,7 +6,7 @@ require 'ure/version'
 Gem::Specification.new do |spec|
   spec.name          = "ure"
   spec.version       = Ure::VERSION
-  spec.authors       = ["Clayton Flesher"]
+  spec.authors       = ["Clayton Flesher", "James Edward Grey II"]
   spec.email         = ["claytonflesher@gmail.com"]
 
   spec.summary       = %q{Immutable value objects for ruby that include required keyword arguments.\n\n  }

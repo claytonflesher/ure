@@ -1,92 +1,90 @@
 require "ure/version"
-module Ure
-  class Struct  
-    def initialize(fields:)
-      @fields = fields
-      set_attributes
+class Ure
+  def self.members
+    @members
+  end
 
-      freeze
-    end
+  def self.new(*members, &body)
+    ::Class.new(self) do
+      instance_variable_set(:@members, members)
 
-#    def [](key)
-#      @fields[key]
-#    end
+      def self.new(*args, &block)
+        object = allocate
+        object.__send__(:initialize, *args, &block) if respond_to?(:initialize, true)
+        object
+      end 
 
-    def each(&block)
-      if block_given?
-        @fields.each_value { |value| yield(value) }
-      else
-        @fields.each_value
+      define_method(:members) do
+        @members ||= members
       end
-    end
 
-    def each_pair(&block)
-      if block_given?
-        @fields.each_pair { |key, value| yield(key, value) }
-      else
-        @fields.each_pair
+      class_eval(&body) if body
+    end
+  end
+
+  def initialize(fields = {})
+    fail "'fields' must be a 'Hash'" unless fields.is_a?(::Hash)
+
+    members.each do |member|
+      fail ArgumentError, "missing keyword: #{member}" unless fields.include?(member)
+      instance_eval <<-END_RUBY
+      def #{member}
+        i = members.index(#{member.inspect})
+        values[i]
       end
+      END_RUBY
     end
 
-    def to_s
-      @fields.to_s
+    unless (extra = fields.keys - members).empty?
+      fail ArgumentError,
+        "unknown keyword#{'s' if extra.size > 1}: #{extra.join(', ')}"
     end
 
-    def inspect
-      to_s
-    end
+    @values = fields
+    @fields = fields
+    freeze
+  end
 
-    def length
-      @fields.length
-    end
+  attr_reader :fields
 
-    def members
-      @fields.keys
-    end
+  def [](key)
+    fields[key]
+  end
 
-    def select(&block)
-      if block_given?
-        @fields.values.select { |value| yield(value) }
-      else
-        @fields.values.select
-      end
+  def each(&block)
+    if block_given?
+      fields.each_pair { |key, value| yield(key, value) }
+    else
+      fields.each_pair
     end
+  end
 
-    def size
-      length
+  def to_s
+    "#<ure #{self.class} #{fields.to_s}"
+  end
+
+  def inspect
+    to_s
+  end
+
+  def to_a
+    fields.values.to_a
+  end
+
+  def to_h
+    fields.to_h
+  end
+
+  def values
+    fields.values
+  end
+
+  def values_at(name, *args)
+    list = []
+    list << fields[name]
+    args.each do |arg|
+      list << fields[arg]
     end
-
-    def to_a
-      @fields.values.to_a
-    end
-
-    def to_h
-      @fields.to_h
-    end
-
-    def values
-      @fields.values
-    end
-
-    def values_at(index, *args)
-      list = []
-      list << @fields.values[index]
-      args.each do |arg|
-        list << @fields.values[arg]
-      end
-      list
-    end
-
-    private
-
-    def set_attributes
-      @fields.each do |key, value|
-        unless self.respond_to?(key, include_all=true)
-          self.define_singleton_method(key) { value }
-        else
-          raise "#{key} is already an existing method!"
-        end
-      end
-    end
+    list
   end
 end

@@ -1,3 +1,3 @@
-module Ure
+class Ure
   VERSION = "0.0.1"
 end
