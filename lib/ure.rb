@@ -63,7 +63,7 @@ class Ure < BasicObject
   end
 
   def to_a
-    fields.values.to_a
+    fields.values
   end
 
   def to_h
