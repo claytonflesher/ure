@@ -70,7 +70,7 @@ Or install it yourself as:
 
 To use Ure, just require it in whatever file is implementing it and treat it like a Struct.
 
-Ure will try to implement as public methods whatever keys you pass in as a hash. For speed purposes, this means that if you pass in an existing method that Ure recognizes, it'll override it. Ure inherits directly from `BasicObject`, so it has very few methods other than its public facing instance methods. Still, this is something to watch out for. If you're passing in ':instance_eval` or a lone `!` as keys, you'll have problems.
+Ure will try to implement as public methods whatever keys you pass in as a hash. For speed purposes, this means that if you pass in an existing method that Ure recognizes, it'll override it. Ure inherits directly from `BasicObject`, so it has very few methods other than its public facing instance methods. Still, this is something to watch out for. If you're passing in `:instance_eval` or a lone `!` as keys, you'll have problems.
 
 Any methods on `Struct` that require indexing or care about the position of arguments have been depricated or changed to only care about the name of the argument passed.
 
