@@ -6,10 +6,6 @@ class Ure < BasicObject
     @members
   end
 
-  def self.class
-    @class
-  end
-
   def self.new(*members, &body)
     ::Class.new(self) do
       instance_variable_set(:@members, members)

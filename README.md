@@ -76,6 +76,10 @@ Any methods on `Struct` that require indexing or care about the position of argu
 
 Ure's current public methods are:
 
+`#==()` - Evaluates the fields. Returns true if the passed argument is an Ure class and they are the same members and values.
+
+`#members` - Returns an array of the required keywords.
+
 `#[]` - Because Ure doesn't care about indexing, this allows users to treat instances of Ure as a hash.
 
 `#each(&block)` - Converts the fields into a hash and calls each on them.
