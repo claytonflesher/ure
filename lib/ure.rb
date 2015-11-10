@@ -1,7 +1,6 @@
 require "ure/version"
 class Ure < BasicObject
   include ::Enumerable
-
   def self.members
     @members
   end
@@ -9,7 +8,6 @@ class Ure < BasicObject
   def self.new(*members, &body)
     ::Class.new(self) do
       instance_variable_set(:@members, members)
-      instance_variable_set(:@class, ::Ure.class)
 
       def self.new(*args, &block)
         object = allocate
@@ -44,6 +42,7 @@ class Ure < BasicObject
 
     @values = fields
     @fields = fields
+    @class  = ::Ure
   end
 
   attr_reader :fields, :class

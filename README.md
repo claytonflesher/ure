@@ -74,7 +74,7 @@ Ure will try to implement as public methods whatever keys you pass in as a hash.
 
 Any methods on `Struct` that require indexing or care about the position of arguments have been depricated or changed to only care about the name of the argument passed.
 
-Ure's current public methods are:
+Ure's current public instance methods are:
 
 `#==()` - Evaluates the fields. Returns true if the passed argument is an Ure class and they are the same members and values.
 
@@ -95,6 +95,8 @@ Ure's current public methods are:
 `#values` - Returns an array of the values in the fields.
 
 `#values_at` - Takes one or more keys as arguments, and returns an array of the corresponding values.
+
+`#class` - Returns `Ure`
 
 ## Development
 
