@@ -1,13 +1,19 @@
 require "ure/version"
 class Ure < BasicObject
   include ::Enumerable
+
   def self.members
     @members
+  end
+
+  def self.class
+    @class
   end
 
   def self.new(*members, &body)
     ::Class.new(self) do
       instance_variable_set(:@members, members)
+      instance_variable_set(:@class, ::Ure.class)
 
       def self.new(*args, &block)
         object = allocate
@@ -44,7 +50,15 @@ class Ure < BasicObject
     @fields = fields
   end
 
-  attr_reader :fields
+  attr_reader :fields, :class
+
+  def ==(arg)
+    if self.class == arg.class
+      fields == arg.fields
+    else
+      false
+    end
+  end
 
   def [](key)
     fields[key]

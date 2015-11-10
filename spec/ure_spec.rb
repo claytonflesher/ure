@@ -10,6 +10,14 @@ describe Ure do
     expect(Ure::VERSION).not_to be nil
   end
 
+  it "has an ==() method" do
+    sedan = Car.new(paint: "red", deluxe: true)
+    van2  = Car.new(paint: :mural, deluxe: false)
+    expect(@van == van2).to eq(true)
+    expect(@van == sedan).to eq(false)
+    expect(@van == {}).to eq(false)
+  end
+
   it "creates methods from the hash" do
     expect(@van.paint).to    eq(:mural)
   end
