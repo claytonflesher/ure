@@ -1,5 +1,6 @@
 require "ure/version"
 class Ure < BasicObject
+  include ::Enumerable
   def self.members
     @members
   end
@@ -23,10 +24,10 @@ class Ure < BasicObject
   end
 
   def initialize(fields = {})
-    fail "'fields' must be a 'Hash'" unless fields.is_a?(::Hash)
+    ::Kernel.fail ::ArgumentError, "'fields' must be a 'Hash'" unless fields.is_a?(::Hash)
 
     members.each do |member|
-      fail ArgumentError, "missing keyword: #{member}" unless fields.include?(member)
+      ::Kernel.fail ::ArgumentError, "missing keyword: #{member}" unless fields.include?(member)
       instance_eval <<-END_RUBY
       def #{member}
         i = members.index(#{member.inspect})
@@ -35,9 +36,8 @@ class Ure < BasicObject
       END_RUBY
     end
 
-    unless (extra = fields.keys - members).empty?
-      fail ArgumentError,
-        "unknown keyword#{'s' if extra.size > 1}: #{extra.join(', ')}"
+    unless (extra = fields.keys - members).empty?  
+      ::Kernel.fail ::ArgumentError, "unknown keyword#{'s' if extra.size > 1}: #{extra.join(', ')}"
     end
 
     @values = fields
@@ -75,11 +75,6 @@ class Ure < BasicObject
   end
 
   def values_at(name, *args)
-    list = []
-    list << fields[name]
-    args.each do |arg|
-      list << fields[arg]
-    end
-    list
+    [fields[name]] + args.map { |arg| fields[arg] }
   end
 end

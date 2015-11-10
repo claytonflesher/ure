@@ -14,7 +14,7 @@ scooby_van = Car.new
 Even worse, what if we include one argument and forget the other?
 
 ```ruby
-myster_machine = Car.new(:mural)
+mystery_machine = Car.new(:mural)
 => #<struct Car paint=:mural, year=nil>
 ```
 Fixing it with Struct's built-in accessors after the fact isn't great, either. What we want is a Struct that has required arguments, and then throws a useful error if we give it the wrong thing.
@@ -37,7 +37,7 @@ But that's not all.
 
 ```ruby
 mystery_machine = Car.new
-NameError: uninitialized constant Ure::ArgumentError
+ArgumentError: missing keyword: paint
 ```
 
 We get a useful error message, instead of a data object populated with `nil`'s.
@@ -78,7 +78,7 @@ Ure's current public methods are:
 
 `#[]` - Because Ure doesn't care about indexing, this allows users to treat instances of Ure as a hash.
 
-`#each(&block) - Converts the fields into a hash and calls each on them.
+`#each(&block)` - Converts the fields into a hash and calls each on them.
 
 `#to_s` - Returns a string describing the object and its fields.
 

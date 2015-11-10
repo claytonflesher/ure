@@ -49,6 +49,7 @@ describe Ure do
   end
 
   it "has a values_at method" do
+    expect(@van.values_at(:deluxe)).to eq([false])
     expect(@van.values_at(:deluxe, :paint)).to eq([false, :mural])
   end
 end
