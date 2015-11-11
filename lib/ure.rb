@@ -61,7 +61,7 @@ class Ure < BasicObject
     else
       false
     end
-  rescue NoMethodError
+  rescue ::NoMethodError
     false
   end
 

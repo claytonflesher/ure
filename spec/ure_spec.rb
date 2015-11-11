@@ -11,13 +11,18 @@ describe Ure do
   end
 
   it "has an ==() method" do
-    sedan = Car.new(paint: "red", deluxe: true)
     van2  = Car.new(paint: :mural, deluxe: false)
-    expect(@van == van2).to eq(true)
-    expect(@van == sedan).to eq(false)
-    expect(@van == {}).to eq(false)
+    expect(@van).to eq(van2)
+
+    sedan = Car.new(paint: "red", deluxe: true)
+    expect(@van).not_to eq(sedan)
+
+    expect(@van).not_to eq({})
+
     house = Ure.new(:paint, :deluxe)
     expect(@van).not_to eq(house.new(paint: @van.paint, deluxe: @van.deluxe))
+
+    expect(@van).not_to eq(BasicObject.new)
   end
 
   it "creates methods from the hash" do
