@@ -19,6 +19,12 @@ class Ure < BasicObject
         @members ||= members
       end
 
+      parent_class = self
+
+      define_method(:class) do
+        parent_class
+      end
+
       class_eval(&body) if body
     end
   end
@@ -41,11 +47,13 @@ class Ure < BasicObject
     end
 
     @values = fields
-    @fields = fields
-    @class  = ::Ure
   end
 
   attr_reader :fields, :class
+
+  def fields
+    @values
+  end
 
   def ==(arg)
     if self.class == arg.class
@@ -53,6 +61,8 @@ class Ure < BasicObject
     else
       false
     end
+  rescue NoMethodError
+    false
   end
 
   def [](key)
@@ -64,11 +74,11 @@ class Ure < BasicObject
   end
 
   def to_s
-    "#<ure #{fields.to_s}"
+    "#<#{::Ure} #{self.class} #{fields.to_s}"
   end
 
   def inspect
-    to_s
+    "#<#{::Ure} #{self.class} #{fields.to_s}"
   end
 
   def to_a

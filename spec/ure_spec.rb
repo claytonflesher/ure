@@ -16,10 +16,12 @@ describe Ure do
     expect(@van == van2).to eq(true)
     expect(@van == sedan).to eq(false)
     expect(@van == {}).to eq(false)
+    house = Ure.new(:paint, :deluxe)
+    expect(@van).not_to eq(house.new(paint: @van.paint, deluxe: @van.deluxe))
   end
 
   it "creates methods from the hash" do
-    expect(@van.paint).to    eq(:mural)
+    expect(@van.paint).to eq(:mural)
   end
 
   it "is immutable" do
@@ -37,11 +39,11 @@ describe Ure do
   end
 
   it "has a to_s method" do
-    expect(@van.to_s).to eq("#<ure {:paint=>:mural, :deluxe=>false}")
+    expect(@van.to_s).to eq("#<Ure Car {:paint=>:mural, :deluxe=>false}")
   end
 
   it "has an inspect method" do
-    expect(@van.inspect).to eq("#<ure {:paint=>:mural, :deluxe=>false}")
+    expect(@van.inspect).to eq("#<Ure Car {:paint=>:mural, :deluxe=>false}")
   end
 
   it "has a to_a method" do
@@ -59,5 +61,9 @@ describe Ure do
   it "has a values_at method" do
     expect(@van.values_at(:deluxe)).to eq([false])
     expect(@van.values_at(:deluxe, :paint)).to eq([false, :mural])
+  end
+
+  it "has a class method" do
+    expect(@van.class).to eq(Car)
   end
 end
