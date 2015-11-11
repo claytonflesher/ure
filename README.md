@@ -29,7 +29,7 @@ require 'ure'
 Car = Ure.new(:paint, :year)
 => Car
 scooby_van = Car.new(year: 1965, paint: :mural)
-=> #ure {:year=>1968, :paint=>:mural}
+=> #<Ure Car {:year=>1968, :paint=>:mural}>
 ```
 Notice that it no longer matters what order `:year` and `:paint` are given to `Car`, because we have keyword arguments.
 
@@ -46,7 +46,7 @@ Also, what happens if we try to change the values in an existing Ure data object
 
 ```ruby
 scooby_van = Car.new(year: 1965, paint: :mural)
-=> #ure {:year=>1968, :paint=>:mural}
+=> #<Ure Car {:year=>1968, :paint=>:mural}>
 scooby_van.year = 2000
 NoMethodError: undefined method `year=' for #<ure {:year=>1965, :paint=>:mural}
 ```
@@ -96,7 +96,7 @@ Ure's current public instance methods are:
 
 `#values_at` - Takes one or more keys as arguments, and returns an array of the corresponding values.
 
-`#class` - Returns `Ure`
+`#class` - Returns the class the instance of Ure is defined on.
 
 ## Development
 
