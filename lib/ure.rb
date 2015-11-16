@@ -37,8 +37,7 @@ class Ure < BasicObject
       ::Kernel.fail ::ArgumentError, "missing keyword: #{member}" unless fields.include?(member)
       instance_eval <<-END_RUBY
       def #{member}
-        i = members.index(#{member.inspect})
-        values[i]
+        fields[#{member.inspect}]
       end
       END_RUBY
     end
