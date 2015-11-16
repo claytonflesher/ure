@@ -1,4 +1,5 @@
 require "ure/version"
+require "json"
 class Ure < BasicObject
   include ::Enumerable
   def self.members
@@ -95,5 +96,9 @@ class Ure < BasicObject
 
   def values_at(name, *args)
     [fields[name]] + args.map { |arg| fields[arg] }
+  end
+
+  def to_json
+    fields.to_json
   end
 end

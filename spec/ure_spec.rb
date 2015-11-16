@@ -71,4 +71,8 @@ describe Ure do
   it "has a class method" do
     expect(@van.class).to eq(Car)
   end
+
+  it "has a to_json method" do
+    expect(@van.to_json).to eq("{\"paint\":\"mural\",\"deluxe\":false}")
+  end
 end

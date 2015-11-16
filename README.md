@@ -80,17 +80,19 @@ Ure's current public instance methods are:
 
 `#members` - Returns an array of the required keywords.
 
+`#fields` - Returns a hash with members as keys, along with their values.
+
 `#[]` - Because Ure doesn't care about indexing, this allows users to treat instances of Ure as a hash.
 
 `#each(&block)` - Converts the fields into a hash and calls each on them.
 
 `#to_s` - Returns a string describing the object and its fields.
 
-`#inspect`- Alians for `.to_s`
+`#inspect`- Alias for `#to_s`.
 
-`#to_a` - Alias for `.values`.
+`#to_a` - Alias for `#values`.
 
-`#to_h` - Returns a hash of the fields.
+`#to_h` - Alias for `#fields`.
 
 `#values` - Returns an array of the values in the fields.
 
@@ -98,11 +100,11 @@ Ure's current public instance methods are:
 
 `#class` - Returns the class the instance of Ure is defined on.
 
+`#to_json` - Returns a JSON string of members and values.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
