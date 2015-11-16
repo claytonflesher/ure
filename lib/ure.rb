@@ -3,13 +3,11 @@ require "json"
 class Ure < BasicObject
   include ::Enumerable
   def self.members
-    @members
+    [].freeze
   end
 
   def self.new(*members, &body)
     ::Class.new(self) do
-      instance_variable_set(:@members, members)
-
       def self.new(*args, &block)
         object = allocate
         object.__send__(:initialize, *args, &block) if respond_to?(:initialize, true)
@@ -17,7 +15,17 @@ class Ure < BasicObject
       end 
 
       define_method(:members) do
-        @members ||= members
+        members
+      end
+
+      members.each do |member|
+        define_method member.to_sym do
+          fields[member.to_sym]
+        end
+
+        define_method :"#{member}=" do |_|
+          ::Kernel.fail "can't modify frozen #{self}"
+        end
       end
 
       parent_class = self
@@ -35,18 +43,18 @@ class Ure < BasicObject
 
     members.each do |member|
       ::Kernel.fail ::ArgumentError, "missing keyword: #{member}" unless fields.include?(member)
-      instance_eval <<-END_RUBY
-      def #{member}
-        fields[#{member.inspect}]
-      end
-      END_RUBY
+      # instance_eval <<-END_RUBY
+      # def #{member}
+      #   fields[#{member.inspect}]
+      # end
+      # END_RUBY
     end
 
     unless (extra = fields.keys - members).empty?  
       ::Kernel.fail ::ArgumentError, "unknown keyword#{'s' if extra.size > 1}: #{extra.join(', ')}"
     end
 
-    @fields = fields
+    @fields = fields.dup.freeze
   end
 
   attr_reader :fields, :class
