@@ -46,14 +46,10 @@ class Ure < BasicObject
       ::Kernel.fail ::ArgumentError, "unknown keyword#{'s' if extra.size > 1}: #{extra.join(', ')}"
     end
 
-    @values = fields
+    @fields = fields
   end
 
   attr_reader :fields, :class
-
-  def fields
-    @values
-  end
 
   def ==(arg)
     if self.class == arg.class

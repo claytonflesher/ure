@@ -2,6 +2,13 @@ require 'spec_helper'
 
 describe Ure do
   Car    = Ure.new(:paint, :deluxe)
+
+  it "doesn't care about the order of arguments" do
+    van = Car.new(deluxe: false, paint: :mural)
+
+    expect(van.paint).to be(:mural)
+  end
+
   before (:each) do
     @van   = Car.new(paint: :mural, deluxe: false)
   end
