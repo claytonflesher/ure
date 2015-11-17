@@ -1,13 +1,19 @@
 require 'spec_helper'
 
 describe Ure do
-  Car    = Ure.new(:paint, :deluxe)
+  Car = Ure.new(:paint, :deluxe)
 
   it "doesn't care about the order of arguments" do
     van = Car.new(deluxe: false, paint: :mural)
 
     expect(van.paint).to be(:mural)
   end
+
+  it "has a frozen members class method" do
+    expect(Car.members).to eq([:paint, :deluxe])
+    expect(Car.members.frozen?).to be_truthy
+  end
+
 
   before (:each) do
     @van   = Car.new(paint: :mural, deluxe: false)
@@ -17,6 +23,15 @@ describe Ure do
     expect(Ure::VERSION).not_to be nil
   end
 
+  #Instance method tests
+
+  it "has frozen members" do
+    expect(@van.members.frozen?).to be_truthy
+  end
+
+  it "has frozen fields" do
+    expect(@van.fields.frozen?).to be_truthy
+  end
   it "has an ==() method" do
     van2  = Car.new(paint: :mural, deluxe: false)
     expect(@van).to eq(van2)

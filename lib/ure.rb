@@ -3,11 +3,13 @@ require "json"
 class Ure < BasicObject
   include ::Enumerable
   def self.members
-    [].freeze
+    @members.freeze
   end
 
   def self.new(*members, &body)
     ::Class.new(self) do
+      instance_variable_set(:@members, members)
+
       def self.new(*args, &block)
         object = allocate
         object.__send__(:initialize, *args, &block) if respond_to?(:initialize, true)
@@ -15,7 +17,7 @@ class Ure < BasicObject
       end 
 
       define_method(:members) do
-        members
+        @members ||= members
       end
 
       members.each do |member|
@@ -41,23 +43,20 @@ class Ure < BasicObject
   def initialize(fields = {})
     ::Kernel.fail ::ArgumentError, "'fields' must be a 'Hash'" unless fields.is_a?(::Hash)
 
+    members.freeze
+
     members.each do |member|
       ::Kernel.fail ::ArgumentError, "missing keyword: #{member}" unless fields.include?(member)
-      # instance_eval <<-END_RUBY
-      # def #{member}
-      #   fields[#{member.inspect}]
-      # end
-      # END_RUBY
     end
 
     unless (extra = fields.keys - members).empty?  
       ::Kernel.fail ::ArgumentError, "unknown keyword#{'s' if extra.size > 1}: #{extra.join(', ')}"
     end
 
-    @fields = fields.dup.freeze
+    @fields = fields.freeze
   end
 
-  attr_reader :fields, :class
+  attr_reader :fields
 
   def ==(arg)
     if self.class == arg.class
